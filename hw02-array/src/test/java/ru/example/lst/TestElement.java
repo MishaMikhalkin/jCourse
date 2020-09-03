@@ -3,10 +3,6 @@ package ru.example.lst;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-
-import java.util.Comparator;
 
 @Data
 @AllArgsConstructor
