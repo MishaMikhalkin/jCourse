@@ -1,0 +1,1 @@
+java -Xmx64m -Xms64m -XX:+UseG1GC   -Xlog:gc=debug:file=/tmp/gcg1.log:time,uptime,level,tags:filecount=5,filesize=100m -jar build/libs/hw04-gc.jar

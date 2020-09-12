@@ -1,0 +1,1 @@
+java -Xmx64m -Xms64m  -XX:+UseParallelGC   -Xlog:gc=debug:file=/tmp/gcpar.log:time,uptime,level,tags:filecount=5,filesize=100m -jar build/libs/hw04-gc.jar

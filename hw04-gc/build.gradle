@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+}
+
+version 'unspecified'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.2')
+    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.4.2')
+    //compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+    //compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+jar {
+    manifest {
+        attributes "Main-Class": "ru.example.Eater"
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+
+
+task runSerial(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+
+    main = 'ru.example.Eater'
+
+    args  "-Xms16m","-Xmx16m"," -XX:+UseSerialGC", "-Xlog:gc=debug:file=/tmp/gc.log:time,uptime,level,tags:filecount=5,filesize=100m"
+}
