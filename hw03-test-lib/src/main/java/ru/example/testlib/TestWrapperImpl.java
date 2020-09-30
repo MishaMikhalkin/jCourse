@@ -34,9 +34,9 @@ class TestWrapperImpl implements Callable<Integer> {
             throw new Exception("Cannot instantiate test Object");
         }
 
-        this.before = getBefore();
+        this.before = getMethodByAnnotation(TestAnnotations.BEFORE);
         this.testMethod = testMethod;
-        this.after = getAfter();
+        this.after = getMethodByAnnotation(TestAnnotations.AFTER);
         this.out = outputFile;
 
         if (testMethod == null) {
@@ -81,16 +81,10 @@ class TestWrapperImpl implements Callable<Integer> {
        return testObject;
     }
 
-    private Method getBefore() {
+    private Method getMethodByAnnotation(TestAnnotations testAnnotation) {
         return List.of(testClass.getDeclaredMethods())
                 .stream()
-                .filter(method -> method.isAnnotationPresent(Before.class)).findFirst().orElse(null);
-    }
-
-    private Method getAfter() {
-        return List.of(testClass.getDeclaredMethods())
-                .stream()
-                .filter(method -> method.isAnnotationPresent(After.class)).findFirst().orElse(null);
+                .filter(method -> method.isAnnotationPresent(testAnnotation.getClassName())).findFirst().orElse(null);
     }
 
     private void callMethod(Method method) {

@@ -17,34 +17,8 @@ public class TestService {
 
     public TestService() { }
 
-    private Class<?> getClass(String filename) throws ClassNotFoundException {
-        return this.getClass().getClassLoader().loadClass(filename);
-    }
-
-    private List<Method> getMethods(Class<?> testClass) {
-        return List.of(testClass.getDeclaredMethods());
-    }
-
-    private List<Method> getTestMethods(String filename) throws ClassNotFoundException {
-        return getMethods(getClass(filename))
-                .stream()
-                .filter(method -> method.isAnnotationPresent(Test.class))
-                .collect(Collectors.toList());
-    }
-
-    public Path getOutputFile(String output) {
+    private Path getOutputFile(String output) {
         return Paths.get(output);
-    }
-
-    private ExecutorService pool = Executors.newFixedThreadPool(2);
-
-    private TestWrapperImpl generateTestWrapper(Class<?> testClass, Method testMethod, Path outputFile) {
-        try {
-            return new TestWrapperImpl(testClass, testMethod, outputFile);
-        } catch (Exception e) {
-            log.info("Skipping test: " + testMethod.getName());
-        };
-        return null;
     }
 
     public long test(String filename, String output) throws ClassNotFoundException {
@@ -70,4 +44,32 @@ public class TestService {
             return 1;
         }
     }
+
+    private Class<?> getClass(String filename) throws ClassNotFoundException {
+        return this.getClass().getClassLoader().loadClass(filename);
+    }
+
+    private List<Method> getMethods(Class<?> testClass) {
+        return List.of(testClass.getDeclaredMethods());
+    }
+
+    private List<Method> getTestMethods(String filename) throws ClassNotFoundException {
+        return getMethods(getClass(filename))
+                .stream()
+                .filter(method -> method.isAnnotationPresent(Test.class))
+                .collect(Collectors.toList());
+    }
+
+    private ExecutorService pool = Executors.newFixedThreadPool(2);
+
+    private TestWrapperImpl generateTestWrapper(Class<?> testClass, Method testMethod, Path outputFile) {
+        try {
+            return new TestWrapperImpl(testClass, testMethod, outputFile);
+        } catch (Exception e) {
+            log.info("Skipping test: " + testMethod.getName());
+        };
+        return null;
+    }
+
+
 }
