@@ -1,7 +1,10 @@
+
+
+plugins {
+    id 'org.springframework.boot' version '2.3.4.RELEASE' apply false
+}
 group 'org.example'
 version '1.0-SNAPSHOT'
-
-
 
 allprojects {
     repositories {
@@ -112,5 +115,14 @@ project(':hw03-testSample') {
 
     test {
         useJUnitPlatform()
+    }
+}
+
+project(':hw05-aop') {
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+
+    dependencies {
+        compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: '2.3.4.RELEASE'
     }
 }
